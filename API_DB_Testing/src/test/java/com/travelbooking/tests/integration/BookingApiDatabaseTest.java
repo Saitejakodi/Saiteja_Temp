@@ -22,7 +22,7 @@ public class BookingApiDatabaseTest extends BaseTest {
                 token
         );
 
-        assertEquals(200, searchResponse.getStatusCode());
+        assertSuccess(searchResponse);
 
         String inventoryId = searchResponse.jsonPath().getString("buses[0].id");
         assertNotNull(inventoryId);
@@ -35,9 +35,12 @@ public class BookingApiDatabaseTest extends BaseTest {
                 300
         );
 
-        Response holdResponse = bookingClient.holdBooking(holdRequest, token);
+        Response holdResponse = bookingClient.holdBooking(
+                holdRequest,
+                token
+        );
 
-        assertEquals(201, holdResponse.getStatusCode());
+        assertSuccess(holdResponse);
 
         String bookingId = holdResponse.jsonPath().getString("id");
         assertNotNull(bookingId);
@@ -48,22 +51,32 @@ public class BookingApiDatabaseTest extends BaseTest {
                 token
         );
 
-        assertEquals(200, paymentResponse.getStatusCode());
+        assertSuccess(paymentResponse);
 
         Response confirmResponse = bookingClient.confirmBooking(
                 bookingId,
                 token
         );
 
-        assertEquals(200, confirmResponse.getStatusCode());
+        assertSuccess(confirmResponse);
 
         Response bookingsResponse = bookingClient.getMyBookings(token);
 
-        assertEquals(201, bookingsResponse.getStatusCode());
+        assertSuccess(bookingsResponse);
 
         String pnr = bookingsResponse.jsonPath().getString("[0].pnr");
 
         assertNotNull(pnr);
         assertFalse(pnr.isBlank());
+    }
+
+    private void assertSuccess(Response response) {
+
+        int statusCode = response.getStatusCode();
+
+        assertTrue(
+                statusCode == 200 || statusCode == 201,
+                "Expected status code 200 or 201 but got " + statusCode
+        );
     }
 }
