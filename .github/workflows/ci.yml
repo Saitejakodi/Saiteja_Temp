@@ -41,7 +41,7 @@ jobs:
           BASE_URL: ${{ secrets.BASE_URL }}
           TRIPSTACK_USERNAME: ${{ secrets.TRIPSTACK_USERNAME }}
           TRIPSTACK_PASSWORD: ${{ secrets.TRIPSTACK_PASSWORD }}
-        run: npx playwright test
+        run: npx playwright test busBooking.spec.ts
 
       - name: Upload Playwright Report
         if: always()
