@@ -104,6 +104,20 @@ jobs:
                 -proot \
                 travel_booking < src/test/resources/schema.sql
 
+      - name: Seed Database
+        run: |
+          mysql -h 127.0.0.1 \
+                -u root \
+                -proot \
+                travel_booking < src/test/resources/seed.sql
+
+      - name: Verify Seed Data
+        run: |
+          mysql -h 127.0.0.1 \
+                -u root \
+                -proot \
+                -e "USE travel_booking; SELECT * FROM bookings; SELECT * FROM passengers; SELECT * FROM payments;"
+
       - name: Run API & Database Tests
         env:
           BASE_URL: ${{ secrets.BASE_URL }}

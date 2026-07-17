@@ -1,4 +1,4 @@
-package com.travelbooking.config;
+package com.travelbooking.database.config;
 
 import io.github.cdimascio.dotenv.Dotenv;
 

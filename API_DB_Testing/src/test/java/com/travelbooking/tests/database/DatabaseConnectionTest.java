@@ -1,6 +1,6 @@
 package com.travelbooking.tests.database;
 
-import com.travelbooking.config.DatabaseConfig;
+import com.travelbooking.database.config.DatabaseConfig;
 import com.travelbooking.config.TestContainerConfig;
 import org.junit.jupiter.api.Test;
 

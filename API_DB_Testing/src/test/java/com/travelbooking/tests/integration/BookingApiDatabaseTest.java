@@ -52,14 +52,6 @@ public class BookingApiDatabaseTest extends BaseTest {
 
         BookingQueries bookingQueries = new BookingQueries();
 
-        bookingQueries.saveBooking(
-                pnr,
-                "LKO",
-                "BLR",
-                "CONFIRMED",
-                1726.20
-        );
-
         Booking booking = bookingQueries.getBookingByPnr(pnr);
 
         assertNotNull(booking);
