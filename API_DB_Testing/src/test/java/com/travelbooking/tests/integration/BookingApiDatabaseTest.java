@@ -37,7 +37,7 @@ public class BookingApiDatabaseTest extends BaseTest {
 
         Response holdResponse = bookingClient.holdBooking(holdRequest, token);
 
-        assertEquals(200, holdResponse.getStatusCode());
+        assertEquals(201, holdResponse.getStatusCode());
 
         String bookingId = holdResponse.jsonPath().getString("id");
         assertNotNull(bookingId);
@@ -48,7 +48,7 @@ public class BookingApiDatabaseTest extends BaseTest {
                 token
         );
 
-        assertEquals(200, paymentResponse.getStatusCode());
+        assertEquals(201, paymentResponse.getStatusCode());
 
         Response confirmResponse = bookingClient.confirmBooking(
                 bookingId,
