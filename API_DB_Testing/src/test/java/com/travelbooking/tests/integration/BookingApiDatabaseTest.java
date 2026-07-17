@@ -30,7 +30,7 @@ public class BookingApiDatabaseTest extends BaseTest {
         HoldRequest holdRequest = new HoldRequest(
                 "bus",
                 inventoryId,
-                List.of("L1"),
+                List.of("L6"),
                 true,
                 300
         );
