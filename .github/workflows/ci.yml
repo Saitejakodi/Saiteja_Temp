@@ -187,6 +187,8 @@ jobs:
         uses: zaproxy/action-baseline@v0.14.0
         with:
           target: ${{ secrets.BASE_URL }}
+          allow_issue_writing: false
+          fail_action: false
 
       - name: Upload ZAP Report
         if: always()
