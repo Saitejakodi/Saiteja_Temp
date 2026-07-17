@@ -4,7 +4,7 @@ export class BusData {
 
     static readonly to = "Bengaluru (BLR) — Kempegowda Intl";
 
-    static readonly seatNumber = "L2";
+    static readonly seatNumber = "L5";
 
     static readonly firstName = "Saiteja";
 
