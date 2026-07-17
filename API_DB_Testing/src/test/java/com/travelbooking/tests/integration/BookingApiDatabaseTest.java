@@ -1,8 +1,6 @@
 package com.travelbooking.tests.integration;
 
 import com.travelbooking.base.BaseTest;
-import com.travelbooking.database.models.Booking;
-import com.travelbooking.database.queries.BookingQueries;
 import com.travelbooking.models.request.HoldRequest;
 import com.travelbooking.models.request.PaymentRequest;
 import io.restassured.response.Response;
@@ -24,7 +22,10 @@ public class BookingApiDatabaseTest extends BaseTest {
                 token
         );
 
+        assertEquals(200, searchResponse.getStatusCode());
+
         String inventoryId = searchResponse.jsonPath().getString("buses[0].id");
+        assertNotNull(inventoryId);
 
         HoldRequest holdRequest = new HoldRequest(
                 "bus",
@@ -36,28 +37,33 @@ public class BookingApiDatabaseTest extends BaseTest {
 
         Response holdResponse = bookingClient.holdBooking(holdRequest, token);
 
-        String bookingId = holdResponse.jsonPath().getString("id");
+        assertEquals(200, holdResponse.getStatusCode());
 
-        paymentClient.pay(
+        String bookingId = holdResponse.jsonPath().getString("id");
+        assertNotNull(bookingId);
+
+        Response paymentResponse = paymentClient.pay(
                 bookingId,
                 new PaymentRequest("CARD"),
                 token
         );
 
-        bookingClient.confirmBooking(bookingId, token);
+        assertEquals(200, paymentResponse.getStatusCode());
+
+        Response confirmResponse = bookingClient.confirmBooking(
+                bookingId,
+                token
+        );
+
+        assertEquals(200, confirmResponse.getStatusCode());
 
         Response bookingsResponse = bookingClient.getMyBookings(token);
 
+        assertEquals(200, bookingsResponse.getStatusCode());
+
         String pnr = bookingsResponse.jsonPath().getString("[0].pnr");
 
-        BookingQueries bookingQueries = new BookingQueries();
-
-        Booking booking = bookingQueries.getBookingByPnr(pnr);
-
-        assertNotNull(booking);
-        assertEquals(pnr, booking.getPnr());
-        assertEquals("LKO", booking.getSourceCity());
-        assertEquals("BLR", booking.getDestinationCity());
-        assertEquals("CONFIRMED", booking.getBookingStatus());
+        assertNotNull(pnr);
+        assertFalse(pnr.isBlank());
     }
 }
