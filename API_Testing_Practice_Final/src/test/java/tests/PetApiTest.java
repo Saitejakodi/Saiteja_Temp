@@ -3,9 +3,11 @@ package tests;
 import base.BaseTest;
 import io.qameta.allure.*;
 import models.Pet;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import specs.SpecFactory;
+import utils.LoggerUtil;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
@@ -16,6 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Feature("Pet Management")
 @Owner("Saiteja")
 public class PetApiTest extends BaseTest {
+
+    private static final Logger log = LoggerUtil.getLogger(PetApiTest.class);
 
     @Test
     @DisplayName("Verify Pet CRUD Operations")
@@ -29,6 +33,8 @@ public class PetApiTest extends BaseTest {
                 "Tommy",
                 "available"
         );
+
+        log.info("Creating Pet");
 
         Pet createdPet =
                 given()
@@ -47,6 +53,8 @@ public class PetApiTest extends BaseTest {
         assertEquals("Tommy", createdPet.name());
 
         Long petId = createdPet.id();
+
+        log.info("Fetching Pet with ID: {}", petId);
 
         Pet fetchedPet =
                 given()
@@ -71,6 +79,8 @@ public class PetApiTest extends BaseTest {
                 "sold"
         );
 
+        log.info("Updating Pet");
+
         Pet updatedPet =
                 given()
                         .spec(SpecFactory.requestSpec())
@@ -88,6 +98,8 @@ public class PetApiTest extends BaseTest {
         assertEquals("Tommy Updated", updatedPet.name());
         assertEquals("sold", updatedPet.status());
 
+        log.info("Deleting Pet");
+
         given()
                 .spec(SpecFactory.requestSpec())
                 .pathParam("petId", petId)
@@ -97,6 +109,8 @@ public class PetApiTest extends BaseTest {
 
                 .then()
                 .statusCode(200);
+
+        log.info("Pet CRUD completed successfully");
     }
 
     @Test
@@ -105,6 +119,8 @@ public class PetApiTest extends BaseTest {
     @Description("Verify pets can be retrieved by status.")
     @Severity(SeverityLevel.NORMAL)
     void findPetByStatus() {
+
+        log.info("Finding Pets by status: sold");
 
         Pet[] pets =
                 given()
@@ -120,5 +136,7 @@ public class PetApiTest extends BaseTest {
                         .as(Pet[].class);
 
         assertTrue(pets.length > 0);
+
+        log.info("Found {} pets with status sold", pets.length);
     }
 }

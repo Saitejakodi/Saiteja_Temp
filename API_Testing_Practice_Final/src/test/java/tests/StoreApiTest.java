@@ -3,9 +3,11 @@ package tests;
 import base.BaseTest;
 import io.qameta.allure.*;
 import models.Order;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import specs.SpecFactory;
+import utils.LoggerUtil;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.module.jsv.JsonSchemaValidator.matchesJsonSchemaInClasspath;
@@ -15,6 +17,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @Feature("Store Management")
 @Owner("Saiteja")
 public class StoreApiTest extends BaseTest {
+
+    private static final Logger log = LoggerUtil.getLogger(StoreApiTest.class);
 
     @Test
     @DisplayName("Verify Place Order and Get Order By ID")
@@ -30,6 +34,8 @@ public class StoreApiTest extends BaseTest {
                 "placed",
                 true
         );
+
+        log.info("Placing Order");
 
         Order createdOrder =
                 given()
@@ -49,6 +55,8 @@ public class StoreApiTest extends BaseTest {
 
         Long orderId = createdOrder.id();
 
+        log.info("Fetching Order with ID: {}", orderId);
+
         Order fetchedOrder =
                 given()
                         .spec(SpecFactory.requestSpec())
@@ -65,5 +73,7 @@ public class StoreApiTest extends BaseTest {
 
         assertEquals(orderId, fetchedOrder.id());
         assertEquals("placed", fetchedOrder.status());
+
+        log.info("Order validation completed successfully");
     }
 }

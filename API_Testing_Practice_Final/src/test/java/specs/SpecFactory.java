@@ -36,7 +36,7 @@ public final class SpecFactory {
         return new RequestSpecBuilder()
                 .setContentType(ContentType.JSON)
                 .addFilter(new AllureRestAssured())
-                .log(LogDetail.ALL)
+//                .log(LogDetail.ALL)
                 .build();
     }
 

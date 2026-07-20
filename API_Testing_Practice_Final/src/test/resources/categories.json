@@ -1,0 +1,17 @@
+[
+  {
+    "name": "Assertion Failures",
+    "matchedStatuses": ["failed"],
+    "messageRegex": ".*expected:.*but was:.*"
+  },
+  {
+    "name": "HTTP Errors",
+    "matchedStatuses": ["broken"],
+    "messageRegex": ".*404.*|.*500.*"
+  },
+  {
+    "name": "Timeout Errors",
+    "matchedStatuses": ["broken"],
+    "messageRegex": ".*timeout.*"
+  }
+]
